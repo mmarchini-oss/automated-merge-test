@@ -65,21 +65,19 @@ jobs:
         id: get_mergable_pull_requests
         with:
           query: |
-            query release($owner:String!,$repo:String!, $baseRefName:String!) {
+            query release($owner:String!,$repo:String!, $base_ref:String!) {
               repository(owner:$owner, name:$repo) {
-                pullRequests(baseRefName: $baseRefName, labels: ["commit-queue"], states: OPEN, last: 100) {
+                pullRequests(baseRefName: $base_ref, labels: ["commit-queue"], states: OPEN, last: 100) {
                   nodes {
                     number
                   }
                 }
               }
             }
-          # owner: ${{ steps.result.owner }}
-          # owner: ${{ toJson(steps.get_context.outputs.result).owner }}
           owner: ${{ steps.owner.outputs.result }}
           repo: ${{ steps.repo.outputs.result }}
-          baseRefName: "master"
-          # baseRefName: ${{ github.event.repository.name }}
+          # XXX: GitHub Actions will lowcast this, so we can't use camel case
+          base_ref: "master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: "echo 'latest release: ${{ steps.get_mergable_pull_requests.outputs.data }}'"
