@@ -29,17 +29,17 @@ jobs:
             console.log(`:set-env: GITHUB_REPO=${repo}`)
             console.log(5)
             return { owner, repo }
-      - name: Dump job context
+      - name: Dump job github
         env:
           JOB_CONTEXT: ${{ toJson(github) }}
         run: echo "$JOB_CONTEXT"
-      - name: Dump job context
+      - name: Dump job env
         run: echo "$GITHUB_OWNER $GITHUB_REPO"
-      - name: Dump job context
+      - name: Dump job job
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
-      - name: Dump job context
+      - name: Dump job steps
         env:
           JOB_CONTEXT: ${{ toJson(steps) }}
         run: echo "$JOB_CONTEXT"
@@ -60,7 +60,8 @@ jobs:
                 }
               }
             }
-          owner: ${{ steps.result.owner }}
+          # owner: ${{ steps.result.owner }}
+          owner: ${{ env.GITHUB_OWNER }}
           repo: ${{ steps.result.repo }}
           baseRefName: "master"
           # baseRefName: ${{ github.event.repository.name }}
