@@ -42,7 +42,7 @@ jobs:
         run: echo "$JOB_CONTEXT"
       - name: Dump job steps
         env:
-          JOB_CONTEXT: ${{ toJson(steps.get_context.output) }}
+          JOB_CONTEXT: ${{ toJson(steps.get_context.outputs) }}
         run: echo "$JOB_CONTEXT"
       # - name: Dump job context
       #   env:
