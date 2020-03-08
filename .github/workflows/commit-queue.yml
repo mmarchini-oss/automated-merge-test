@@ -16,16 +16,17 @@ jobs:
           script: |
             console.log(context)
             console.log(github)
-            const [ org, repo ] = github.repository.split("/")
-            console.log(`:set-env: GITHUB_ORG=${org}`)
+            const repo = context.repository.name;
+            const owner = context.repository.owner.name;
+            console.log(`:set-env: GITHUB_OWNER=${owner}`)
             console.log(`:set-env: GITHUB_REPO=${repo}`)
-            return { org, repo }
+            return { owner, repo }
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(github) }}
         run: echo "$JOB_CONTEXT"
       - name: Dump job context
-        run: echo "$GITHUB_ORG $GITHUB_REPO"
+        run: echo "$GITHUB_OWNER $GITHUB_REPO"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
@@ -51,7 +52,7 @@ jobs:
                 }
               }
             }
-          owner: ${{ steps.result.org }}
+          owner: ${{ steps.result.owner }}
           repo: ${{ steps.result.repo }}
           baseRefName: "master"
           # baseRefName: ${{ github.event.repository.name }}
