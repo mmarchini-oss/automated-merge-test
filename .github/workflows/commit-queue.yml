@@ -40,9 +40,13 @@ jobs:
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
-      - name: Dump job steps
+      - name: Dump job toJson steps
         env:
           JOB_CONTEXT: ${{ toJson(steps.get_context.outputs) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump job steps
+        env:
+          JOB_CONTEXT: ${{ steps.get_context.outputs }}
         run: echo "$JOB_CONTEXT"
       # - name: Dump job context
       #   env:
@@ -62,7 +66,7 @@ jobs:
               }
             }
           # owner: ${{ steps.result.owner }}
-          owner: ${{ env.GITHUB_OWNER }}
+          owner: ${{ toJson(steps.get_context.outputs.result).owner }}
           repo: ${{ steps.get_context.outputs.result.repo }}
           baseRefName: "master"
           # baseRefName: ${{ github.event.repository.name }}
