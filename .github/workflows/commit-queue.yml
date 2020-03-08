@@ -10,7 +10,8 @@ jobs:
   commitQueue:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/github-script@0.8.0
+      - id: get_context
+        uses: actions/github-script@0.8.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -41,7 +42,7 @@ jobs:
         run: echo "$JOB_CONTEXT"
       - name: Dump job steps
         env:
-          JOB_CONTEXT: ${{ toJson(steps) }}
+          JOB_CONTEXT: ${{ toJson(steps.get_context.output) }}
         run: echo "$JOB_CONTEXT"
       # - name: Dump job context
       #   env:
