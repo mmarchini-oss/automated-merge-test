@@ -18,12 +18,15 @@ jobs:
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$JOB_CONTEXT"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(env) }}
+        run: echo "$JOB_CONTEXT"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(result) }}
