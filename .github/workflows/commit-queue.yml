@@ -10,20 +10,6 @@ jobs:
   commitQueue:
     runs-on: ubuntu-latest
     steps:
-      - id: repo
-        uses: actions/github-script@0.8.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: |
-            console.log(context)
-            return context.payload.repository.name
-      - id: owner
-        uses: actions/github-script@0.8.0
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          result-encoding: string
-          script: return context.payload.repository.owner.name
       - uses: octokit/graphql-action@v2.x
         id: get_mergable_pull_requests
         with:
@@ -37,9 +23,8 @@ jobs:
                 }
               }
             }
-          owner: ${{ steps.owner.outputs.result }}
-          repo: ${{ steps.repo.outputs.result }}
-          # XXX: GitHub Actions will lowcast this, so we can't use camel case
+          owner: "mmarchini"
+          repo: "automated-merge-test"
           base_ref: "master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
