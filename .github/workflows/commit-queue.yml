@@ -50,7 +50,7 @@ jobs:
         run: echo "$JOB_CONTEXT"
       - name: Dump job outputs steps
         env:
-          JOB_CONTEXT: ${{ steps.get_context.outputs.result }}
+          JOB_CONTEXT: ${{ steps.get_context.outputs.result.owner }}
         run: echo "$JOB_CONTEXT"
       # - name: Dump job steps
       #   env:
