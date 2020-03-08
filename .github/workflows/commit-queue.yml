@@ -9,6 +9,10 @@ jobs:
   commitQueue:
     runs-on: ubuntu-latest
     steps:
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(github.event) }}
+        run: echo "$JOB_CONTEXT"
       - uses: octokit/graphql-action@v2.x
         id: get_mergable_pull_requests
         with:
