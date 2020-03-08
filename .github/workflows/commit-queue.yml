@@ -17,9 +17,12 @@ jobs:
             // console.log(context)
             // console.log(github)
             console.log(1)
-            const repo = context.repository.name;
+            const { payload } = context;
+            console.log(1)
+            const { repository } = payload;
+            const repo = repository.name;
             console.log(2)
-            const owner = context.repository.owner.name;
+            const owner = repository.owner.name;
             console.log(3)
             console.log(`:set-env: GITHUB_OWNER=${owner}`)
             console.log(4)
