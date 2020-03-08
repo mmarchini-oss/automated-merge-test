@@ -10,57 +10,49 @@ jobs:
   commitQueue:
     runs-on: ubuntu-latest
     steps:
-      - id: get_context
+      - id: repo
         uses: actions/github-script@0.8.0
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            // console.log(context)
-            // console.log(github)
-            console.log(1)
-            const { payload } = context;
-            console.log(1)
-            const { repository } = payload;
-            const repo = repository.name;
-            console.log(2)
-            const owner = repository.owner.name;
-            console.log(3)
-            console.log(`::set-env GITHUB_OWNER=${owner}`)
-            console.log(4)
-            console.log(`::set-env GITHUB_REPO=${repo}`)
-            console.log(5)
-            return { owner, repo }
-      - name: Push docs
-        env:
-          DOCS_BRANCH: ${{steps.get_context.outputs.result}}
-        run: |
-          printenv | grep DOCS_BRANCH
-      - name: Dump job github
-        env:
-          JOB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump job env
-        run: echo "$GITHUB_OWNER $GITHUB_REPO"
-      - name: Dump job job
-        env:
-          JOB_CONTEXT: ${{ toJson(job) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump job toJson steps
-        env:
-          JOB_CONTEXT: ${{ toJson(steps.get_context.outputs) }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump job toJson steps
-        env:
-          JOB_CONTEXT: ${{ toJson(toJson(steps.get_context.outputs).result).owner }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump job outputs steps
-        env:
-          JOB_CONTEXT: ${{ steps.get_context.outputs.result }}
-        run: echo "$JOB_CONTEXT"
-      - name: Dump job outputs steps
-        env:
-          JOB_CONTEXT: ${{ toJson(steps.get_context.outputs.result).owner }}
-        run: echo "$JOB_CONTEXT"
+          result-encoding: string
+          script: return context.payload.repository.name
+      - id: owner
+        uses: actions/github-script@0.8.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          result-encoding: string
+          script: return context.payload.repository.owner.name
+      # - name: Push docs
+      #   env:
+      #     DOCS_BRANCH: ${{steps.get_context.outputs.result}}
+      #   run: |
+      #     printenv | grep DOCS_BRANCH
+      # - name: Dump job github
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(github) }}
+      #   run: echo "$JOB_CONTEXT"
+      # - name: Dump job env
+      #   run: echo "$GITHUB_OWNER $GITHUB_REPO"
+      # - name: Dump job job
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(job) }}
+      #   run: echo "$JOB_CONTEXT"
+      # - name: Dump job toJson steps
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(steps.get_context.outputs) }}
+      #   run: echo "$JOB_CONTEXT"
+      # - name: Dump job toJson steps
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(toJson(steps.get_context.outputs).result).owner }}
+      #   run: echo "$JOB_CONTEXT"
+      # - name: Dump job outputs steps
+      #   env:
+      #     JOB_CONTEXT: ${{ steps.get_context.outputs.result }}
+      #   run: echo "$JOB_CONTEXT"
+      # - name: Dump job outputs steps
+      #   env:
+      #     JOB_CONTEXT: ${{ toJson(steps.get_context.outputs.result).owner }}
+      #   run: echo "$JOB_CONTEXT"
       # - name: Dump job steps
       #   env:
       #     JOB_CONTEXT: ${{ steps.get_context.outputs }}
@@ -83,8 +75,9 @@ jobs:
               }
             }
           # owner: ${{ steps.result.owner }}
-          owner: ${{ toJson(steps.get_context.outputs.result).owner }}
-          repo: ${{ steps.get_context.outputs.result.repo }}
+          # owner: ${{ toJson(steps.get_context.outputs.result).owner }}
+          owner: ${{ steps.owner.outputs.result }}
+          repo: ${{ steps.repo.outputs.result }}
           baseRefName: "master"
           # baseRefName: ${{ github.event.repository.name }}
         env:
