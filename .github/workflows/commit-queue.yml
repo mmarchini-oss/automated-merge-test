@@ -24,9 +24,9 @@ jobs:
             console.log(2)
             const owner = repository.owner.name;
             console.log(3)
-            console.log(`:set-env: GITHUB_OWNER=${owner}`)
+            console.log(`::set-env GITHUB_OWNER=${owner}`)
             console.log(4)
-            console.log(`:set-env: GITHUB_REPO=${repo}`)
+            console.log(`::set-env GITHUB_REPO=${repo}`)
             console.log(5)
             return { owner, repo }
       - name: Dump job github
