@@ -63,7 +63,7 @@ jobs:
             }
           # owner: ${{ steps.result.owner }}
           owner: ${{ env.GITHUB_OWNER }}
-          repo: ${{ steps.result.repo }}
+          repo: ${{ steps.get_context.outputs.result.repo }}
           baseRefName: "master"
           # baseRefName: ${{ github.event.repository.name }}
         env:
