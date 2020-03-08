@@ -13,19 +13,23 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(github)
-            return github
+            const [ org, repo ] = github.repository.split("/")
+            console.log(`:set-env: GITHUB_ORG=${org}`)
+            console.log(`:set-env: GITHUB_REPO=${repo}`)
+            return { org, repo }
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(github) }}
         run: echo "$JOB_CONTEXT"
       - name: Dump job context
-        env:
-          JOB_CONTEXT: ${{ toJson(env) }}
-        run: echo "$JOB_CONTEXT"
+        run: echo "$GITHUB_ORG $GITHUB_REPO"
       - name: Dump job context
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump job context
+        env:
+          JOB_CONTEXT: ${{ toJson(step) }}
         run: echo "$JOB_CONTEXT"
       # - name: Dump job context
       #   env:
