@@ -30,6 +30,11 @@ jobs:
             console.log(`::set-env GITHUB_REPO=${repo}`)
             console.log(5)
             return { owner, repo }
+      - name: Push docs
+        env:
+          DOCS_BRANCH: ${{steps.get_context.outputs.result}}
+        run: |
+          printenv | grep DOCS_BRANCH
       - name: Dump job github
         env:
           JOB_CONTEXT: ${{ toJson(github) }}
@@ -47,6 +52,10 @@ jobs:
       - name: Dump job toJson steps
         env:
           JOB_CONTEXT: ${{ toJson(toJson(steps.get_context.outputs).result).owner }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump job outputs steps
+        env:
+          JOB_CONTEXT: ${{ steps.get_context.outputs.result }}
         run: echo "$JOB_CONTEXT"
       - name: Dump job outputs steps
         env:
