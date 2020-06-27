@@ -35,9 +35,12 @@ npm install -g node-core-utils
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
 
-ncu-config --global set readme "$(pwd)"/README.md
+ncu-config set readme "$(pwd)"/README.md
 ncu-config set branch master
 ncu-config set upstream origin
+
+ncu-config set username ${GITHUB_ACTOR}
+ncu-config set token ${GITHUB_TOKEN}
 
 ncu-config set repo "$REPOSITORY"
 ncu-config set owner "$OWNER"
