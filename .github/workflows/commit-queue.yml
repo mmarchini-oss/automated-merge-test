@@ -43,11 +43,4 @@ jobs:
 
       # TODO: replace this block with ncu
       - name: Do the thing
-        run: ./land-stuff.sh \
-          mmarchini-oss \
-          automated-merge-test \
-          commit-queue \
-          commit-queue-failed \
-          ${{ env.GITHUB_ACTOR }} \
-          ${{ secrets.GITHUB_TOKEN }} \
-          $(echo '${{ steps.get_mergable_pull_requests.outputs.data }}' | jq '.repository.pullRequests.nodes | map(.number) | .[]')
+        run: ./land-stuff.sh mmarchini-oss automated-merge-test commit-queue commit-queue-failed gh ${{ secrets.GITHUB_TOKEN }} $(echo '${{ steps.get_mergable_pull_requests.outputs.data }}' | jq '.repository.pullRequests.nodes | map(.number) | .[]')
