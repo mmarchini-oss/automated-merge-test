@@ -22,8 +22,8 @@ jobs:
 
       - name: Set variables
         run: |
-          echo "::set-env REPOSITORY=$(echo ${{ github.repository }} | cut -d/ -f2)"
-          echo "::set-env OWNER=${{ github.repository_owner }}"
+          echo "::set-env name=REPOSITORY::$(echo ${{ github.repository }} | cut -d/ -f2)"
+          echo "::set-env name=OWNER::${{ github.repository_owner }}"
 
       # Get Pull Requests
       - name: Get Pull Requests
