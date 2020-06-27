@@ -26,7 +26,7 @@ function commentsUrl() {
 }
 
 
-npm install -g 'https://github.com/mmarchini/node-core-utils#set-error-code'
+npm install -g 'https://github.com/mmarchini/node-core-utils#commit-queue-branch'
 
 # TODO(mmarchini): should this be set with whoever added the label for each PR?
 git config --local user.email "action@github.com"
@@ -51,7 +51,7 @@ for pr in "$@"; do
        --header 'content-type: application/json'
 
   commit=$(git rev-parse HEAD)
-  git node land --yes "$pr" || echo "Failed to run git node land"
+  git node land --yes "$pr" || git node land --abort --yes
 
   # TODO(mmarchini): workaround for ncu not returning the expected status code,
   # if the HEAD commit didn't change it means git node land failed
