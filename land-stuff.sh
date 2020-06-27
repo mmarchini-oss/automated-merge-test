@@ -47,7 +47,7 @@ ncu-config set jenkins_token ${JENKINS_TOKEN}
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
 
 for pr in "$@"; do
-  echo curl --request DELETE \
+  curl --request DELETE \
        --url "$(labelsUrl "$pr")"/"$COMMIT_QUEUE_LABEL" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json'
@@ -59,7 +59,7 @@ for pr in "$@"; do
   # if the HEAD commit didn't change it means git node land failed
   if [ "$commit" == "$(git rev-parse HEAD)" ]; then
     # Do we need to reset?
-    echo curl --request PUT \
+    curl --request PUT \
        --url "$(labelsUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
