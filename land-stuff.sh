@@ -2,8 +2,6 @@
 
 set -xe
 
-echo starting arguments: $@
-
 OWNER=$1 # mmarchini-oss
 REPOSITORY=$2 # automated-merge-test
 COMMIT_QUEUE_LABEL=$3 # automated-merge-test
@@ -11,8 +9,6 @@ COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
 GITHUB_ACTOR=$5 # env.GITHUB_ACTOR
 GITHUB_TOKEN=$6 # secrets.GITHUB_TOKEN
 shift 6
-
-echo parsed arguments: $@
 
 API_URL=https://api.github.com
 
@@ -29,7 +25,7 @@ function commentsUrl() {
 }
 
 
-npm install -g node-core-utils
+npm install -g 'https://github.com/mmarchini/node-core-utils#set-error-code'
 
 # TODO(mmarchini): should this be set with whoever added the label for each PR?
 git config --local user.email "action@github.com"
