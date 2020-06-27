@@ -37,28 +37,34 @@ git config --local user.name "GitHub Action"
 ncu-config set branch master
 ncu-config set upstream origin
 
-ncu-config set username ${GH_USER_NAME}
-ncu-config set token ${GH_USER_TOKEN}
-ncu-config set jenkins_token ${JENKINS_TOKEN}
+ncu-config set username "${GH_USER_NAME}"
+ncu-config set token "${GH_USER_TOKEN}"
+ncu-config set jenkins_token "${JENKINS_TOKEN}"
 
-# ncu-config set repo "$REPOSITORY"
-# ncu-config set owner "$OWNER"
+ncu-config set repo "$REPOSITORY"
+ncu-config set owner "$OWNER"
 
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
 
 for pr in "$@"; do
+  # Skip PR if CI is still running
+  if ncu-ci url "https://github.com/${OWNER}/${REPOSITORY}/pull/${pr}" | grep "^Result *PENDING"; then
+    continue;
+  fi
+
   curl -sL --request DELETE \
        --url "$(labelsUrl "$pr")"/"$COMMIT_QUEUE_LABEL" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json'
 
   commit=$(git rev-parse HEAD)
-  git node land --yes "$pr" >output 2>&1 || git node land --abort --yes
+  git node land --yes "$pr" >output 2>&1 || echo "Failed to land #${pr}"
 
   # TODO(mmarchini): workaround for ncu not returning the expected status code,
   # if the HEAD commit didn't change it means git node land failed
-  if [ "$commit" == "$(git rev-parse HEAD)" ]; then
-    # Do we need to reset?
+  if ! tail -n 10 output | grep '. Post "Landed in .*/pull/'"${pr}"; then
+    git node land --abort --yes
+
     curl -sL --request PUT \
        --url "$(labelsUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
