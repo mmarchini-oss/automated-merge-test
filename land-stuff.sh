@@ -4,7 +4,7 @@ set -xe
 
 echo starting arguments: $@
 
-ORG=$1 # mmarchini-oss
+OWNER=$1 # mmarchini-oss
 REPOSITORY=$2 # automated-merge-test
 COMMIT_QUEUE_LABEL=$3 # automated-merge-test
 COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
@@ -17,7 +17,7 @@ echo parsed arguments: $@
 API_URL=https://api.github.com
 
 function issueUrl() {
-  echo "$API_URL/repos/${ORG}/${REPOSITORY}/issues/${1}"
+  echo "$API_URL/repos/${OWNER}/${REPOSITORY}/issues/${1}"
 }
 
 function labelsUrl() {
@@ -40,7 +40,7 @@ ncu-config set branch master
 ncu-config set upstream origin
 
 ncu-config set repo "$REPOSITORY"
-ncu-config set org "$ORG"
+ncu-config set owner "$OWNER"
 
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
 
