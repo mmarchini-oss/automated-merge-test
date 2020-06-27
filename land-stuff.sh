@@ -6,10 +6,12 @@ OWNER=$1 # mmarchini-oss
 REPOSITORY=$2 # automated-merge-test
 COMMIT_QUEUE_LABEL=$3 # automated-merge-test
 COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
-GITHUB_ACTOR=$5 # env.GITHUB_ACTOR
-GITHUB_TOKEN=$6 # secrets.GITHUB_TOKEN
-JENKINS_TOKEN=$7 # secrets.GITHUB_TOKEN
-shift 7
+GH_USER_NAME=$5 # secrets.GH_USER_NAME
+GH_USER_TOKEN=$6 # secrets.GH_USER_TOKEN
+GITHUB_ACTOR=$7 # secrets.GITHUB_ACTOR
+GITHUB_TOKEN=$8 # secrets.GITHUB_TOKEN
+JENKINS_TOKEN=$9 # secrets.JENKINS_TOKEN
+shift 9
 
 API_URL=https://api.github.com
 
@@ -35,8 +37,8 @@ git config --local user.name "GitHub Action"
 ncu-config set branch master
 ncu-config set upstream origin
 
-ncu-config set username ${GITHUB_ACTOR}
-ncu-config set token ${GITHUB_TOKEN}
+ncu-config set username ${GH_USER_NAME}
+ncu-config set token ${GH_USER_TOKEN}
 ncu-config set jenkins_token ${JENKINS_TOKEN}
 
 # ncu-config set repo "$REPOSITORY"
