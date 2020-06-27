@@ -9,7 +9,7 @@ COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
 GITHUB_ACTOR=$5 # env.GITHUB_ACTOR
 GITHUB_TOKEN=$6 # secrets.GITHUB_TOKEN
 JENKINS_TOKEN=$7 # secrets.GITHUB_TOKEN
-shift 6
+shift 7
 
 API_URL=https://api.github.com
 
@@ -51,10 +51,12 @@ for pr in "$@"; do
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json'
 
-  success=yes
-  git node land --yes "$pr" || success=no
+  commit=$(git rev-parse HEAD)
+  git node land --yes "$pr" || echo "Failed to run git node land"
 
-  if [ "$success" == "no" ]; then
+  # TODO(mmarchini): workaround for ncu not returning the expected status code,
+  # if the HEAD commit didn't change it means git node land failed
+  if [ "$commit" == "$(git rev-parse HEAD)" ]; then
     # Do we need to reset?
     echo curl --request PUT \
        --url "$(labelsUrl "$pr")" \
