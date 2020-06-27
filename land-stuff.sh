@@ -85,7 +85,7 @@ for pr in "$@"; do
        --data '{"body": "Landed in '"$(git rev-parse HEAD)"'"}'
 
     curl -sL --request PATCH \
-       --url "$(commentsUrl "$pr")" \
+       --url "$(issueUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
        --data '{"status": "closed"}'
