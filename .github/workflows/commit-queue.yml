@@ -10,7 +10,19 @@ jobs:
   commitQueue:
     runs-on: ubuntu-latest
     steps:
-      - uses: octokit/graphql-action@v2.x
+      - uses: actions/checkout@master
+
+      # Install dependencies
+      - name: Install jq
+        run: sudo apt-get install jq -y
+      - name: Install Node.js
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+
+      # Get Pull Requests
+      - name: Get Pull Requests
+        uses: octokit/graphql-action@v2.x
         id: get_mergable_pull_requests
         with:
           query: |
@@ -28,4 +40,14 @@ jobs:
           base_ref: "master"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: "echo 'latest release: ${{ steps.get_mergable_pull_requests.outputs.data }}'"
+
+      # TODO: replace this block with ncu
+      - name: Do the thing
+        run: ./land-stuff.sh \
+          mmarchini-oss \
+          automated-merge-test \
+          commit-queue \
+          commit-queue-failed \
+          ${{ env.GITHUB_ACTOR }} \
+          ${{ secrets.GITHUB_TOKEN }} \
+          $(echo ${{ steps.get_mergable_pull_requests.outputs.data }} | jq '.repository.pullRequests.nodes | map(.number) | .[]')
