@@ -67,13 +67,11 @@ for pr in "$@"; do
 
     jq -n --arg content "<details><summary>Commit Queue failed</summary><pre>$(cat output)</pre></details>" '{body: $content}' > output.json
 
-    cat output.json | jq
-
     curl -sL --request POST \
        --url "$(commentsUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
-       --data @output-formatted.json
+       --data @output.json
 
     rm output output.json;
   else
