@@ -8,6 +8,7 @@ COMMIT_QUEUE_LABEL=$3 # automated-merge-test
 COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
 GITHUB_ACTOR=$5 # env.GITHUB_ACTOR
 GITHUB_TOKEN=$6 # secrets.GITHUB_TOKEN
+JENKINS_TOKEN=$7 # secrets.GITHUB_TOKEN
 shift 6
 
 API_URL=https://api.github.com
@@ -37,6 +38,7 @@ ncu-config set upstream origin
 
 ncu-config set username ${GITHUB_ACTOR}
 ncu-config set token ${GITHUB_TOKEN}
+ncu-config set jenkins_token ${JENKINS_TOKEN}
 
 ncu-config set repo "$REPOSITORY"
 ncu-config set owner "$OWNER"
