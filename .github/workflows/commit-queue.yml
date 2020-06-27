@@ -50,4 +50,4 @@ jobs:
           commit-queue-failed \
           ${{ env.GITHUB_ACTOR }} \
           ${{ secrets.GITHUB_TOKEN }} \
-          $(echo ${{ steps.get_mergable_pull_requests.outputs.data }} | jq '.repository.pullRequests.nodes | map(.number) | .[]')
+          $(echo '${{ steps.get_mergable_pull_requests.outputs.data }}' | jq '.repository.pullRequests.nodes | map(.number) | .[]')
