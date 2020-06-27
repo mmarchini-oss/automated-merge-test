@@ -48,7 +48,7 @@ remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${OWNER}/${REPOS
 
 for pr in "$@"; do
   # Skip PR if CI is still running
-  if ncu-ci url "https://github.com/${OWNER}/${REPOSITORY}/pull/${pr}" | grep "^Result *PENDING"; then
+  if ncu-ci url "https://github.com/${OWNER}/${REPOSITORY}/pull/${pr}" 2>&1 | grep "^Result *PENDING"; then
     continue;
   fi
 
