@@ -44,7 +44,7 @@ ncu-config set jenkins_token ${JENKINS_TOKEN}
 # ncu-config set repo "$REPOSITORY"
 # ncu-config set owner "$OWNER"
 
-remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
+remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
 
 for pr in "$@"; do
   curl -sL --request DELETE \
