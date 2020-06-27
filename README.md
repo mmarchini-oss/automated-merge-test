@@ -7,11 +7,6 @@ project.
 
 Required for NCU, so minimal lists created for this repo
 
-### Collaborators
-
-* [mmarchini](https://github.com/mmarchini) -
-**mmarchini** &lt;me@mmarchini.me&gt;
-
 ### TSC (Technical Steering Committee)
 
 * [mmarchini](https://github.com/mmarchini) -
@@ -21,6 +16,11 @@ Required for NCU, so minimal lists created for this repo
 
 * [ghost](https://github.com/ghost) -
 **ghost** &lt;ghost@ghost.ghost&gt;
+
+### Collaborators
+
+* [mmarchini](https://github.com/mmarchini) -
+**mmarchini** &lt;me@mmarchini.me&gt;
 
 ### Collaborator Emeriti
 
