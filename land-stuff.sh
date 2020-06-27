@@ -32,7 +32,6 @@ npm install -g 'https://github.com/mmarchini/node-core-utils#set-error-code'
 git config --local user.email "action@github.com"
 git config --local user.name "GitHub Action"
 
-ncu-config set readme "$(pwd)"/README.md
 ncu-config set branch master
 ncu-config set upstream origin
 
@@ -40,8 +39,8 @@ ncu-config set username ${GITHUB_ACTOR}
 ncu-config set token ${GITHUB_TOKEN}
 ncu-config set jenkins_token ${JENKINS_TOKEN}
 
-ncu-config set repo "$REPOSITORY"
-ncu-config set owner "$OWNER"
+# ncu-config set repo "$REPOSITORY"
+# ncu-config set owner "$OWNER"
 
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
 

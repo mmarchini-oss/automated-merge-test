@@ -1,0 +1,6 @@
+{
+  "repo": "automated-merge-test",
+  "owner": "mmarchini-oss",
+  "waitTimeSingleApproval": 0,
+  "waitTimeMultiApproval": 0
+}
