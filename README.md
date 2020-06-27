@@ -21,3 +21,8 @@ Required for NCU, so minimal lists created for this repo
 
 * [ghost](https://github.com/ghost) -
 **ghost** &lt;ghost@ghost.ghost&gt;
+
+### Collaborator Emeriti
+
+* [ghost](https://github.com/ghost) -
+**ghost** &lt;ghost@ghost.ghost&gt;
