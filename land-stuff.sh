@@ -53,7 +53,7 @@ for pr in "$@"; do
        --header 'content-type: application/json'
 
   commit=$(git rev-parse HEAD)
-  git node land --yes "$pr" || git node land --abort --yes
+  git node land --yes "$pr" 2>&1 1>output || git node land --abort --yes
 
   # TODO(mmarchini): workaround for ncu not returning the expected status code,
   # if the HEAD commit didn't change it means git node land failed
@@ -64,7 +64,18 @@ for pr in "$@"; do
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
        --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
+
+    jq -n --arg content "<details><summary>Commit Queue failed</summary><pre>$(cat output)</pre></details>" '{body: $content}' > output.json
+
+    curl -sL --request POST \
+       --url "$(commentsUrl "$pr")" \
+       --header "authorization: Bearer ${GITHUB_TOKEN}" \
+       --header 'content-type: application/json' \
+       --data @output-formatted.json
+
+    rm output output.json;
   else
+    rm output;
     git push "${remote_repo}" HEAD:master
 
     curl -sL --request POST \
