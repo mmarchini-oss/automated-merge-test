@@ -16,3 +16,8 @@ Required for NCU, so minimal lists created for this repo
 
 * [mmarchini](https://github.com/mmarchini) -
 **mmarchini** &lt;me@mmarchini.me&gt;
+
+### TSC Emeriti
+
+* [ghost](https://github.com/ghost) -
+**ghost** &lt;ghost@ghost.ghost&gt;
