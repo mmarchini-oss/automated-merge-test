@@ -94,7 +94,7 @@ continues until all PRs have done the steps above.
   - [ ] Properly validate if `git node land` worked by checking `output`
   - [ ] Fail if PR has more than one commit
   - [ ] Check if the `push` event is happening when landing via `commit-queue`
-  - [ ] 
+  - [ ] `git node land --strict` to require Jenkins Green or Yellow CI
 
 ### Optional
 
