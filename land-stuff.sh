@@ -47,7 +47,7 @@ ncu-config set jenkins_token ${JENKINS_TOKEN}
 remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${REPOSITORY}.git"
 
 for pr in "$@"; do
-  curl --request DELETE \
+  curl -sL --request DELETE \
        --url "$(labelsUrl "$pr")"/"$COMMIT_QUEUE_LABEL" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json'
@@ -59,21 +59,21 @@ for pr in "$@"; do
   # if the HEAD commit didn't change it means git node land failed
   if [ "$commit" == "$(git rev-parse HEAD)" ]; then
     # Do we need to reset?
-    curl --request PUT \
+    curl -sL --request PUT \
        --url "$(labelsUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
        --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
   else
-    echo git push "${remote_repo}" HEAD:master
+    git push "${remote_repo}" HEAD:master
 
-    echo curl --request POST \
+    curl -sL --request POST \
        --url "$(commentsUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
        --data '{"body": "Landed in '"$(git rev-parse HEAD)"'"}'
 
-    echo curl --request PATCH \
+    curl -sL --request PATCH \
        --url "$(commentsUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
