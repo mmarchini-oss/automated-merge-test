@@ -50,8 +50,8 @@ for pr in "$@"; do
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json'
 
-  success=none
-  git node land --yes "$pr" && success=yes || success=no
+  success=yes
+  git node land --yes "$pr" || success=no
 
   if [ "$success" == "no" ]; then
     # Do we need to reset?
