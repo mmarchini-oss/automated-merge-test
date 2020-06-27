@@ -88,6 +88,6 @@ for pr in "$@"; do
        --url "$(issueUrl "$pr")" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' \
-       --data '{"status": "closed"}'
+       --data '{"state": "closed"}'
   fi
 done;
