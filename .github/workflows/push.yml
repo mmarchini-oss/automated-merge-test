@@ -1,0 +1,14 @@
+---
+name: Push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: echo "I'm alive!"
