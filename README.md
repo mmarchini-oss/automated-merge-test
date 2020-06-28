@@ -90,11 +90,10 @@ continues until all PRs have done the steps above.
 
   - [ ] Keep on `commit-queue` if:
     - [ ] `request-ci` label is also present
-    - [ ] Last Jenkins CI is pending
-  - [ ] Properly validate if `git node land` worked by checking `output`
+    - [x] Last Jenkins CI is pending
+  - [x] Properly validate if `git node land` worked by checking `output`
   - [ ] Fail if PR has more than one commit
   - [ ] Check if the `push` event is happening when landing via `commit-queue`
-  - [ ] `git node land --strict` to require Jenkins Green or Yellow CI
 
 ### Optional
 
@@ -121,6 +120,9 @@ Here's a checklist to implement the revert queue:
 
 #### Miscellaneous / Future Work
 
+  - [ ] `git node land --strict` to require Jenkins Green or Yellow CI
+    - Not required because we check if CI is running first, and land will fail
+      if CI is red.
   - [ ] Skip if GitHub Actions are pending
   - [ ] Fail if GitHub Actions failed
   - [ ] `git node land` to add Commit-Queueu-By metatada, or to use the user
