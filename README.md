@@ -88,12 +88,12 @@ continues until all PRs have done the steps above.
 
 ### Required
 
-  - [ ] Keep on `commit-queue` if:
-    - [ ] `request-ci` label is also present
+  - [x] Keep on `commit-queue` if:
+    - [x] `request-ci` label is also present
     - [x] Last Jenkins CI is pending
   - [x] Properly validate if `git node land` worked by checking `output`
-  - [ ] Fail if PR has more than one commit
-  - [ ] Check if the `push` event is happening when landing via `commit-queue`
+  - [x] Fail if PR has more than one commit
+  - [x] Check if the `push` event is happening when landing via `commit-queue`
 
 ### Optional
 
