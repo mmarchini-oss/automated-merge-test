@@ -99,7 +99,7 @@ for pr in "$@"; do
     rm output output.json;
   else
     rm output;
-    git push HEAD:master
+    git push origin master;
 
     curl -sL --request POST \
        --url "$(commentsUrl "$pr")" \
