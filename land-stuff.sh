@@ -8,7 +8,7 @@ COMMIT_QUEUE_LABEL=$3 # automated-merge-test
 COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
 GH_USER_NAME=$5 # secrets.GH_USER_NAME
 GH_USER_TOKEN=$6 # secrets.GH_USER_TOKEN
-GITHUB_ACTOR=$7 # secrets.GITHUB_ACTOR
+# GITHUB_ACTOR=$7 # secrets.GITHUB_ACTOR
 GITHUB_TOKEN=$8 # secrets.GITHUB_TOKEN
 JENKINS_TOKEN=$9 # secrets.JENKINS_TOKEN
 shift 9
@@ -55,7 +55,7 @@ ncu-config set jenkins_token "${JENKINS_TOKEN}"
 ncu-config set repo "$REPOSITORY"
 ncu-config set owner "$OWNER"
 
-remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
+remote_repo="https://${GH_USER_NAME}:${GH_USER_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
 
 for pr in "$@"; do
   # Skip PR if CI is still running
