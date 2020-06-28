@@ -8,7 +8,7 @@ COMMIT_QUEUE_LABEL=$3 # automated-merge-test
 COMMIT_QUEUE_FAILED_LABEL=$4 # automated-merge-test
 GH_USER_NAME=$5 # secrets.GH_USER_NAME
 GH_USER_TOKEN=$6 # secrets.GH_USER_TOKEN
-GITHUB_ACTOR=$7 # secrets.GITHUB_ACTOR
+# GITHUB_ACTOR=$7 # secrets.GITHUB_ACTOR
 GITHUB_TOKEN=$8 # secrets.GITHUB_TOKEN
 JENKINS_TOKEN=$9 # secrets.JENKINS_TOKEN
 shift 9
@@ -25,6 +25,17 @@ function labelsUrl() {
 
 function commentsUrl() {
   echo "$(issueUrl "${1}")/comments"
+}
+
+function gitHubCurl() {
+  url=$1
+  method=$2
+  shift 2
+
+  curl -sL --request "$method" \
+       --url "$url" \
+       --header "authorization: Bearer ${GITHUB_TOKEN}" \
+       --header 'content-type: application/json' "$@"
 }
 
 
@@ -44,11 +55,16 @@ ncu-config set jenkins_token "${JENKINS_TOKEN}"
 ncu-config set repo "$REPOSITORY"
 ncu-config set owner "$OWNER"
 
-remote_repo="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
+remote_repo="https://${GH_USER_NAME}:${GH_USER_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
 
 for pr in "$@"; do
   # Skip PR if CI is still running
   if ncu-ci url "https://github.com/${OWNER}/${REPOSITORY}/pull/${pr}" 2>&1 | grep "^Result *PENDING"; then
+    continue;
+  fi
+
+  # Skip PR if CI is still running
+  if gitHubCurl "$(labelsUrl "$pr")" GET | jq -e 'map(.name) | index("request-ci")'; then
     continue;
   fi
 
@@ -65,11 +81,12 @@ for pr in "$@"; do
   if ! tail -n 10 output | grep '. Post "Landed in .*/pull/'"${pr}"; then
     git node land --abort --yes
 
-    curl -sL --request PUT \
-       --url "$(labelsUrl "$pr")" \
-       --header "authorization: Bearer ${GITHUB_TOKEN}" \
-       --header 'content-type: application/json' \
-       --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
+    # curl -sL --request PUT \
+    #    --url "$(labelsUrl "$pr")" \
+    #    --header "authorization: Bearer ${GITHUB_TOKEN}" \
+    #    --header 'content-type: application/json' \
+    #    --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
+    gitHubCurl "$(labelsUrl "$pr")" PUT --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
 
     jq -n --arg content "<details><summary>Commit Queue failed</summary><pre>$(cat output)</pre></details>" '{body: $content}' > output.json
 
