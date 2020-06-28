@@ -9,7 +9,8 @@ jobs:
   commitQueue:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
+        token: ${{ secrets.GH_USER_TOKEN }}
 
       # Install dependencies
       - name: Install jq

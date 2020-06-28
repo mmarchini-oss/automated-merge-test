@@ -55,7 +55,7 @@ ncu-config set jenkins_token "${JENKINS_TOKEN}"
 ncu-config set repo "$REPOSITORY"
 ncu-config set owner "$OWNER"
 
-remote_repo="https://${GH_USER_NAME}:${GH_USER_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
+# remote_repo="https://${GH_USER_NAME}:${GH_USER_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
 
 for pr in "$@"; do
   # Skip PR if CI is still running
@@ -99,7 +99,7 @@ for pr in "$@"; do
     rm output output.json;
   else
     rm output;
-    git push "${remote_repo}" HEAD:master
+    git push HEAD:master
 
     curl -sL --request POST \
        --url "$(commentsUrl "$pr")" \
