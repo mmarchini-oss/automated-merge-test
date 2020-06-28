@@ -42,7 +42,7 @@ function gitHubCurl() {
 npm install -g 'https://github.com/mmarchini/node-core-utils#commit-queue-branch'
 
 # TODO(mmarchini): should this be set with whoever added the label for each PR?
-git config --local user.email "me@mmarchini.me"
+git config --local user.email "mat@mmarchini.me"
 git config --local user.name "mmarchini"
 
 ncu-config set branch master
