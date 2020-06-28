@@ -42,8 +42,8 @@ function gitHubCurl() {
 npm install -g 'https://github.com/mmarchini/node-core-utils#commit-queue-branch'
 
 # TODO(mmarchini): should this be set with whoever added the label for each PR?
-git config --local user.email "mat@mmarchini.me"
-git config --local user.name "mmarchini"
+git config --local user.email "action@github.com"
+git config --local user.name "GitHub Action"
 
 ncu-config set branch master
 ncu-config set upstream origin
@@ -54,8 +54,6 @@ ncu-config set jenkins_token "${JENKINS_TOKEN}"
 
 ncu-config set repo "$REPOSITORY"
 ncu-config set owner "$OWNER"
-
-# remote_repo="https://${GH_USER_NAME}:${GH_USER_TOKEN}@github.com/${OWNER}/${REPOSITORY}.git"
 
 for pr in "$@"; do
   # Skip PR if CI is still running
