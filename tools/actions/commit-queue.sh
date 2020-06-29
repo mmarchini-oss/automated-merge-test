@@ -61,7 +61,7 @@ for pr in "$@"; do
   if ! tail -n 10 output | grep '. Post "Landed in .*/pull/'"${pr}"; then
     git node land --abort --yes
 
-    gitHubCurl "$(labelsUrl "$pr")" PUT --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
+    gitHubCurl "$(labelsUrl "$pr")" POST --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
 
     jq -n --arg content "<details><summary>Commit Queue failed</summary><pre>$(cat output)</pre></details>" '{body: $content}' > output.json
 
