@@ -55,12 +55,12 @@ for pr in "$@"; do
 
   commit=$(git rev-parse HEAD)
   git node land --yes "$pr" >output 2>&1 || echo "Failed to land #${pr}"
+  # cat here otherwise we'll be supressing the output of git node land
+  cat output
 
   # TODO(mmarchini): workaround for ncu not returning the expected status code,
   # if the "Landed in..." message was not on the output we assume land failed
   if ! tail -n 10 output | grep '. Post "Landed in .*/pull/'"${pr}"; then
-    git node land --abort --yes
-
     gitHubCurl "$(labelsUrl "$pr")" POST --data '{"labels": ["'"${COMMIT_QUEUE_FAILED_LABEL}"'"]}'
 
     jq -n --arg content "<details><summary>Commit Queue failed</summary><pre>$(cat output)</pre></details>" '{body: $content}' > output.json
@@ -68,6 +68,10 @@ for pr in "$@"; do
     gitHubCurl "$(commentsUrl "$pr")" POST --data @output.json
 
     rm output output.json;
+    # If `git node land --abort` fails, we're in unknown state. Better to stop
+    # the script here, current PR was removed from the queue so it shouldn't
+    # interfer again in the future
+    git node land --abort --yes || exit 1
   else
     rm output;
     git push origin master;
