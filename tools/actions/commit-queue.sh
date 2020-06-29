@@ -71,7 +71,7 @@ for pr in "$@"; do
     # If `git node land --abort` fails, we're in unknown state. Better to stop
     # the script here, current PR was removed from the queue so it shouldn't
     # interfer again in the future
-    git node land --abort --yes || exit 1
+    git node land --abort --yes
   else
     rm output;
     git push origin master;
