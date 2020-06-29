@@ -31,7 +31,7 @@ jobs:
         run: |
           sudo apt-get install jq -y
           # TODO(mmarchini): install from npm after next ncu release is out
-          npm install -g 'https://github.com/mmarchini/node-core-utils#abort-exit-code'
+          npm install -g 'https://github.com/mmarchini/node-core-utils#commit-queue-branch'
           # npm install -g node-core-utils
 
       - name: Set variables
