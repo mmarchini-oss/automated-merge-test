@@ -8,8 +8,8 @@ GITHUB_TOKEN=$3
 shift 3
 
 API_URL=https://api.github.com
-COMMIT_QUEUE_LABEL=$3
-COMMIT_QUEUE_FAILED_LABEL=$4
+COMMIT_QUEUE_LABEL='commit-queue'
+COMMIT_QUEUE_FAILED_LABEL='commit-queue-failed'
 
 function issueUrl() {
   echo "$API_URL/repos/${OWNER}/${REPOSITORY}/issues/${1}"
@@ -28,7 +28,7 @@ function gitHubCurl() {
   method=$2
   shift 2
 
-  curl -sL --request "$method" \
+  curl -fsL --request "$method" \
        --url "$url" \
        --header "authorization: Bearer ${GITHUB_TOKEN}" \
        --header 'content-type: application/json' "$@"
