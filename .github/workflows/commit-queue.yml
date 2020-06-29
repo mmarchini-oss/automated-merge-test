@@ -66,9 +66,9 @@ jobs:
         run: |
           ncu-config set branch master
           ncu-config set upstream origin
-          ncu-config set username "${{ env.GH_USER_NAME }}"
-          ncu-config set token "${{ env.GH_USER_TOKEN }}"
-          ncu-config set jenkins_token "${{ env.JENKINS_TOKEN }}"
+          ncu-config set username "${{ secrets.GH_USER_NAME }}"
+          ncu-config set token "${{ secrets.GH_USER_TOKEN }}"
+          ncu-config set jenkins_token "${{ secrets.JENKINS_TOKEN }}"
           ncu-config set repo "${{ env.REPOSITORY }}"
           ncu-config set owner "${{ env.OWNER }}"
 
