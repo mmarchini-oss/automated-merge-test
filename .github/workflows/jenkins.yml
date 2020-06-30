@@ -1,0 +1,15 @@
+---
+name: Jenkins
+
+on:
+  repository_dispatch:
+    types: ["jenkins.node-test-pull-request.pending"]
+      - master
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install jq
+        run: echo "I'm alive!"
+
