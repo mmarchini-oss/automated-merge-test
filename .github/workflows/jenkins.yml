@@ -4,7 +4,6 @@ name: Jenkins
 on:
   repository_dispatch:
     types: ["jenkins.node-test-pull-request.pending"]
-      - master
 
 jobs:
   push:
