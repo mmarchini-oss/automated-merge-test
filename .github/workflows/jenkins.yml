@@ -9,7 +9,7 @@ jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event }}
+      - run: echo ${{ toJson(github.event) }}
       - uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
