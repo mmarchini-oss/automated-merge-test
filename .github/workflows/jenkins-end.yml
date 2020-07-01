@@ -11,9 +11,7 @@ jobs:
     steps:
       - run: |
           ref=$(echo ${{ github.event.client_payload.ref }} | cut -d/ -f1 --complement)
-          echo "::set-env name=REF:${ref}"
-        env:
-          FOO: ${{ toJson(github.event) }}
+          echo "::set-env name=REF::${ref}"
 
       - uses: octokit/request-action@v2.x
         id: get_check
@@ -33,7 +31,7 @@ jobs:
             exit 1
           fi
           check_run=${{ fromJson(steps.get_check.outputs.data).check_runs[0].id }}
-          echo "::set-env name=CHECK_RUN:${check_run}"
+          echo "::set-env name=CHECK_RUN::${check_run}"
 
           status="${{ github.event.client_payload.status }}"
           case "$status" in
@@ -48,7 +46,7 @@ jobs:
               status="failure";;
           esac
 
-          echo "::set-env name=STATUS:${status}"
+          echo "::set-env name=STATUS::${status}"
 
       - uses: octokit/request-action@v2.x
         id: get_latest_release
