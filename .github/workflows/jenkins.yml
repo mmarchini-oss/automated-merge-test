@@ -12,6 +12,16 @@ jobs:
       - run: echo "$FOO"
         env:
           FOO: ${{ toJson(github.event) }}
+
+      - uses: octokit/request-action@v2.x
+        id: get_commit
+        with:
+          route: GET /repos/:repo/git/:ref
+          repo: ${{ github.repository }}
+          ref: ${{ github.event.client_payload.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
@@ -25,7 +35,7 @@ jobs:
           name: "Jenkins CI"
           # external_id: ${{ github.event.client_payload.number }}
           status: in_progress
-          head_sha: ${{ github.event.client_payload.ref }}
+          head_sha: ${{ fromJson(steps.get_commit.outputs.data).object.sha }}
           details_url: ${{ github.event.client_payload.url }}
           output: | # The | is significant!
             title: Jenkins CI CI CI :D
