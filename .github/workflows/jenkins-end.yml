@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "$FOO"
-          ref=$(${{ github.event.client_payload.ref }} |cut -d/ -f1 --complement)
+          ref=$(echo ${{ github.event.client_payload.ref }} | cut -d/ -f1 --complement)
           echo "::set-env name=REF:${ref}"
         env:
           FOO: ${{ toJson(github.event) }}
