@@ -12,7 +12,24 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: get_latest_release
         with:
-          route: GET /repos/:repository/releases/latest
+          route: POST /repos/:repo/check-runs
           repository: ${{ github.repository }}
+
+          mediaType: | # The | is significant!
+            previews:
+              - antiope
+
+          name: "Jenkins CI"
+          external_id: ${{ github.event.NUMBER }}
+          status: in_progress
+          head_sha: ${{ github.sha }}
+          details_url: ${{ github.event.URL }}
+          output: | # The | is significant!
+            title: Jenkins CI CI CI :D
+            summary: This is a Jenkins CI
+            images:
+              - alt: Test image
+                image_url: https://octodex.github.com/images/jetpacktocat.png
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
