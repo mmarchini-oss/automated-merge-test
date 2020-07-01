@@ -3,13 +3,15 @@ name: Jenkins
 
 on:
   repository_dispatch:
-    types: ["jenkins.main-ci.pending"]
+    types: ["jenkins.main-ci.start"]
 
 jobs:
   push:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "$FOO"
+      - run: |
+          echo "$FOO"
+
         env:
           FOO: ${{ toJson(github.event) }}
 
