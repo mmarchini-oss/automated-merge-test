@@ -16,7 +16,7 @@ jobs:
         id: get_latest_release
         with:
           route: POST /repos/:repo/check-runs
-          repository: ${{ github.repository }}
+          repo: ${{ github.repository }}
 
           mediaType: | # The | is significant!
             previews:
