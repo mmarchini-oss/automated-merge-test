@@ -19,6 +19,10 @@ jobs:
           route: GET /repos/:repo/commits/:ref/check-runs
           repo: ${{ github.repository }}
           ref: ${{ env.REF }}
+
+          mediaType: | # The | is significant!
+            previews:
+              - antiope
           check_name: "Jenkins CI"
           status: "in_progress"
         env:

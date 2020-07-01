@@ -21,10 +21,6 @@ jobs:
           route: GET /repos/:repo/git/:ref
           repo: ${{ github.repository }}
           ref: ${{ github.event.client_payload.ref }}
-
-          mediaType: | # The | is significant!
-            previews:
-              - antiope
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
