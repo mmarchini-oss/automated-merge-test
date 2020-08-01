@@ -10,7 +10,7 @@
           "column": 3
         },
         {
-          "regexp": "^> (.*)$",
+          "regexp": "(^>.*$\n)*",
           "message": 1,
           "loop": true
         }
