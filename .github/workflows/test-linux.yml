@@ -27,5 +27,5 @@ jobs:
         run: |
           mkdir -p out/Release
           cp $(which node) out/Release/node
-          echo "::add-matcher::eslint-compact-problem-matcher.json"
+          echo "::add-matcher::js-tests-problem-matcher.json"
           make run-ci -j2 V=1 TEST_CI_ARGS="-p dots"
