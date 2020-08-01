@@ -11,8 +11,7 @@
         },
         {
           "regexp": "(^>.*$\n)*",
-          "message": 1,
-          "loop": true
+          "message": 1
         }
       ]
     }
