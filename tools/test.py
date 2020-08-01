@@ -122,7 +122,7 @@ class ProgressIndicator(object):
     col = line = 0
     if find_full_path:
         line, col = map(int, find_full_path.groups())
-    print("::error file=%s,line=%d,col=%d::%s" % (test.file, line, col, traceback))
+    print("::error file=%s,line=%d,col=%d::%s" % (test.file, line, col, traceback.replace('\n', '%0A'))
     print("Absolute Path: %s:%d:%d" % (test.file, line, col))
 
   def PrintFailureHeader(self, test):
