@@ -234,16 +234,18 @@ class SimpleProgressIndicator(ProgressIndicator):
       self.PrintFailureHeader(failed.test)
       self.PrintAnnotate(failed.test, failed.output)
       if failed.output.stderr:
-        print("--- stderr ---")
-        print(failed.output.stderr.strip())
+        print("> --- stderr ---")
+        print("\n".join(map(lambda f: "> %s" % f, failed.output.stderr.strip().split("\n"))))
       if failed.output.stdout:
-        print("--- stdout ---")
-        print(failed.output.stdout.strip())
-      print("Command: %s" % EscapeCommand(failed.command))
+        print("> --- stdout ---")
+        print("\n".join(map(lambda f: "> %s" % f, failed.output.stdout.strip().split("\n"))))
+        #  print("--- stdout ---")
+        #  print(failed.output.stdout.strip())
       if failed.HasCrashed():
-        print("--- %s ---" % PrintCrashed(failed.output.exit_code))
+        print("> --- %s ---" % PrintCrashed(failed.output.exit_code))
       if failed.HasTimedOut():
-        print("--- TIMEOUT ---")
+        print("> --- TIMEOUT ---")
+      print("Command: %s" % EscapeCommand(failed.command))
     if len(self.failed) == 0:
       print("===")
       print("=== All tests succeeded")

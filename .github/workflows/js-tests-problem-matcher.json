@@ -8,6 +8,11 @@
           "file": 1,
           "line": 2,
           "column": 3
+        },
+        {
+          "regexp": "^> (.*)$",
+          "message": 1,
+          "loop": true
         }
       ]
     }
