@@ -116,14 +116,33 @@ class ProgressIndicator(object):
     self.lock = threading.Lock()
     self.shutdown_event = threading.Event()
 
-  def PrintAnnotate(self, test, output):
+  def GetAnnotationInfo(self, test, output):
     traceback = output.stdout + output.stderr
     find_full_path = re.search(r' +at .*\(.*%s:([0-9]+):([0-9]+)' % test.file, traceback)
     col = line = 0
     if find_full_path:
         line, col = map(int, find_full_path.groups())
-    print("::error file=%s,line=%d,col=%d::%s" % (test.file, line, col, traceback.replace('\n', '%0A')))
-    print("Absolute Path: %s:%d:%d" % (test.file, line, col))
+    return test.file, line, col
+
+  def PrintFailureOutput(self, failure):
+    output = []
+    if failure.output.stderr:
+      output += ["--- stderr ---" ]
+      output += [failure.output.stderr.strip()]
+    if failure.output.stdout:
+      output += ["--- stdout ---"]
+      output += [failure.output.stdout.strip()]
+    output += ["Command: %s" % EscapeCommand(failure.command)]
+    if failure.HasCrashed():
+      output += ["--- %s ---" % PrintCrashed(failure.output.exit_code)]
+    if failure.HasTimedOut():
+      output += ["--- TIMEOUT ---"]
+    output = "\n".join(output)
+    if False:
+      print(output)
+    else:
+      filename, line, column = self.GetAnnotationInfo(failure.test, failure.output)
+      print("::error file=%s,line=%d,col=%d::%s" % (filename, line, column, output.replace('\n', '%0A')))
 
   def PrintFailureHeader(self, test):
     if test.IsNegative():
@@ -233,20 +252,7 @@ class SimpleProgressIndicator(ProgressIndicator):
     print()
     for failed in self.failed:
       self.PrintFailureHeader(failed.test)
-      self.PrintAnnotate(failed.test, failed.output)
-      if failed.output.stderr:
-        print("> --- stderr ---")
-        print("\n".join(map(lambda f: "> %s" % f, failed.output.stderr.strip().split("\n"))))
-      if failed.output.stdout:
-        print("> --- stdout ---")
-        print("\n".join(map(lambda f: "> %s" % f, failed.output.stdout.strip().split("\n"))))
-        #  print("--- stdout ---")
-        #  print(failed.output.stdout.strip())
-      if failed.HasCrashed():
-        print("> --- %s ---" % PrintCrashed(failed.output.exit_code))
-      if failed.HasTimedOut():
-        print("> --- TIMEOUT ---")
-      print("Command: %s" % EscapeCommand(failed.command))
+      self.PrintFailureOutput(failed)
     if len(self.failed) == 0:
       print("===")
       print("=== All tests succeeded")
