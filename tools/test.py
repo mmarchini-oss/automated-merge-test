@@ -122,7 +122,9 @@ class ProgressIndicator(object):
     col = line = 0
     if find_full_path:
         line, col = map(int, find_full_path.groups())
-    return test.file, line, col
+    root_path = abspath(join(dirname(__file__), '../')) + os.sep
+    filename = test.file.replace(root_path, "")
+    return filename, line, col
 
   def PrintFailureOutput(self, failure):
     output = []
