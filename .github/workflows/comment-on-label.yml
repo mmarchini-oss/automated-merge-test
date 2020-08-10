@@ -6,9 +6,9 @@ on:
     types: ["labeled"]
 
 jobs:
-  comment:
+  leaveComment:
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'doc'
+    # if: github.event.label.name == 'doc'
     steps:
       - uses: actions/checkout@v2
       - run: |
