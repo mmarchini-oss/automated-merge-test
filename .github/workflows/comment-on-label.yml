@@ -2,8 +2,9 @@
 name: leaveComment
 
 on:
-  pull_request_target:
-    types: ["labeled"]
+    push:
+#   pull_request_target:
+#     types: ["labeled"]
 
 jobs:
   leaveComment:
