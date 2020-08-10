@@ -8,7 +8,7 @@ on:
 jobs:
   leaveComment:
     runs-on: ubuntu-latest
-    if: github.event.comment.body == '/jenkins' && contains(['COLLABORATOR', 'MEMBER', 'OWNER'], github.event.comment.author_association)
+    if: github.event.comment.body == '/jenkins' && contains('COLLABORATOR MEMBER OWNER', github.event.comment.author_association)
     steps:
       - uses: actions/checkout@v2
       - name: Dump GitHub context
