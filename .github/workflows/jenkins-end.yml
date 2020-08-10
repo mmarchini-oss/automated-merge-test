@@ -1,0 +1,78 @@
+---
+name: Jenkins
+
+on:
+  repository_dispatch:
+    types: ["jenkins.main-ci.end"]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          ref=$(echo ${{ github.event.client_payload.ref }} | cut -d/ -f1 --complement)
+          echo "::set-env name=REF::${ref}"
+
+      - uses: octokit/request-action@v2.x
+        id: get_check
+        with:
+          route: GET /repos/:repo/commits/:ref/check-runs
+          repo: ${{ github.repository }}
+          ref: ${{ env.REF }}
+
+          mediaType: | # The | is significant!
+            previews:
+              - antiope
+          check_name: "Jenkins CI"
+          status: "in_progress"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: |
+          total=${{ fromJson(steps.get_check.outputs.data).total_count }}
+          if [ "$total" != "1" ]; then
+            echo "${total} is not 1"
+            exit 1
+          fi
+          check_run=${{ fromJson(steps.get_check.outputs.data).check_runs[0].id }}
+          echo "::set-env name=CHECK_RUN::${check_run}"
+
+          status="${{ github.event.client_payload.status }}"
+          case "$status" in
+            "success" )
+              status="success" ;;
+            "unstable" )
+              status="success" ;;
+            "failure" )
+              status="failure" ;;
+            "*")
+              echo "Unknown status '$s'"
+              status="failure";;
+          esac
+
+          echo "::set-env name=STATUS::${status}"
+
+      - uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+          route: PATCH /repos/:repo/check-runs/:check_run_id
+          repo: ${{ github.repository }}
+          check_run_id: ${{ env.CHECK_RUN }}
+
+          mediaType: | # The | is significant!
+            previews:
+              - antiope
+
+          status: completed
+          conclusion: ${{ env.STATUS }}
+          head_sha: ${{ fromJson(steps.get_check.outputs.data).check_runs[0].id }}
+          details_url: ${{ github.event.client_payload.url }}
+          output: | # The | is significant!
+            title: Jenkins CI CI CI :D
+            summary: This is a Jenkins CI
+            images:
+              - alt: Test image
+                image_url: https://octodex.github.com/images/jetpacktocat.png
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
