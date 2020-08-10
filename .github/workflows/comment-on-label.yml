@@ -1,5 +1,5 @@
 ---
-name: Leave Comment
+name: leaveComment
 
 on:
   pull_request_target:
