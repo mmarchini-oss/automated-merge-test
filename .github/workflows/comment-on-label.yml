@@ -11,4 +11,8 @@ jobs:
     if: github.event.comment.body == '/jenkins'
     steps:
       - uses: actions/checkout@v2
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
       - run: ./foo.sh ${{ github.repository_owner }} $(echo ${{ github.repository }} | cut -d/ -f2) ${{ secrets.GITHUB_TOKEN }} ${{ github.event.number }}
