@@ -1,0 +1,15 @@
+---
+name: Jenkins
+
+on:
+  pull_request_target:
+    types: ["labeled"]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'doc'
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+        ./foo.sh ${{ github.repository_owner }} $(echo ${{ github.repository }} | cut -d/ -f2) ${{ secrets.GITHUB_TOKEN }} ${{ github.event.number }}
