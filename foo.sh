@@ -28,4 +28,4 @@ function issueUrl() {
   echo "$API_URL/repos/${OWNER}/${REPOSITORY}/issues/${1}"
 }
 
-gitHubCurl "$(commentsUrl "$pr")" POST --data '{ "body": "bar" }'
+gitHubCurl "$(commentsUrl "$pr")" POST --data '{ "body": "biz" }'
