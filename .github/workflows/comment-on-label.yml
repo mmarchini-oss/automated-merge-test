@@ -1,12 +1,12 @@
 ---
-name: Jenkins
+name: Leave Comment
 
 on:
   pull_request_target:
     types: ["labeled"]
 
 jobs:
-  push:
+  comment:
     runs-on: ubuntu-latest
     if: github.event.label.name == 'doc'
     steps:
