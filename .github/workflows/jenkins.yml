@@ -1,0 +1,50 @@
+---
+name: Jenkins
+
+on:
+  repository_dispatch:
+    types: ["jenkins.main-ci.start"]
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "$FOO"
+
+        env:
+          FOO: ${{ toJson(github.event) }}
+
+      - uses: octokit/request-action@v2.x
+        id: get_commit
+        with:
+          route: GET /repos/:repo/git/:ref
+          repo: ${{ github.repository }}
+          ref: ${{ github.event.client_payload.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: octokit/request-action@v2.x
+        id: get_latest_release
+        with:
+          route: POST /repos/:repo/check-runs
+          repo: ${{ github.repository }}
+
+          mediaType: | # The | is significant!
+            previews:
+              - antiope
+
+          name: "Jenkins CI"
+          # external_id: ${{ github.event.client_payload.number }}
+          status: in_progress
+          head_sha: ${{ fromJson(steps.get_commit.outputs.data).object.sha }}
+          details_url: ${{ github.event.client_payload.url }}
+          output: | # The | is significant!
+            title: Jenkins CI CI CI :D
+            summary: This is a Jenkins CI
+            images:
+              - alt: Test image
+                image_url: https://octodex.github.com/images/jetpacktocat.png
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
