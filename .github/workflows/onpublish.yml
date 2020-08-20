@@ -1,0 +1,11 @@
+name: run-on-publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  run-on-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "I'm alive!"
